@@ -42,9 +42,6 @@ const Layout = ({ children, title = "Task Management" }) => {
                 <Heading as="h1" size="lg" color="teal.500">
                   {title}
                 </Heading>
-                <Text fontSize="sm" color="gray.500">
-                  Built with React & Chakra UI
-                </Text>
               </HStack>
               <Spacer />
               <HStack spacing={2}>
