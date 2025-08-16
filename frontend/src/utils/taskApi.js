@@ -1,4 +1,6 @@
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+import { config, logger } from './config.js';
+
+const BACKEND_URL = config.apiUrl;
 
 // Helper function to make authenticated requests
 const makeAuthRequest = async (url, options = {}, token) => {
@@ -11,17 +13,28 @@ const makeAuthRequest = async (url, options = {}, token) => {
     headers.Authorization = `Bearer ${token}`;
   }
 
-  const response = await fetch(`${BACKEND_URL}${url}`, {
-    ...options,
-    headers,
-  });
+  logger.debug('Making API request:', { url: `${BACKEND_URL}${url}`, method: options.method || 'GET' });
 
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+  try {
+    const response = await fetch(`${BACKEND_URL}${url}`, {
+      ...options,
+      headers,
+      timeout: config.apiTimeout,
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      logger.error('API request failed:', errorData);
+      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    logger.debug('API request successful:', { url: `${BACKEND_URL}${url}`, data });
+    return data;
+  } catch (error) {
+    logger.error('API request error:', error);
+    throw error;
   }
-
-  return response.json();
 };
 
 // Task API functions
