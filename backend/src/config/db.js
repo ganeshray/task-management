@@ -1,10 +1,6 @@
 import mongoose from "mongoose";
 mongoose.set("strictQuery", false);
 
-import dotenv from "dotenv";
-
-dotenv.config();
-
 export const connectDB = async () => {
     const dbUrl = process.env.MONGO_URI;
     if (!dbUrl) {
@@ -13,6 +9,8 @@ export const connectDB = async () => {
     }
     try {
         console.log("🔄 Attempting to connect to MongoDB...");
+        console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+        console.log(`Connecting to database: ${dbUrl.includes('task_management_prod') ? 'Production DB' : 'Development DB'}`);
         const con = await mongoose.connect(dbUrl);
         console.log(`✅ MongoDB connected: ${con.connection.host}`);
     } catch (error) {

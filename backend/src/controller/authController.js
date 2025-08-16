@@ -16,7 +16,8 @@ export const registeruser = asyncHandler(async (req, res) => {
     }
 
     // Hash password
-    const salt = await bcrypt.genSalt(10);
+    const bcryptRound = Number(process.env.BCRYPT_ROUNDS || 10);
+    const salt = await bcrypt.genSalt(bcryptRound);
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const user = await User.create({
