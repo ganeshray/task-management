@@ -37,6 +37,10 @@ task-management/
 - Dashboard for managing tasks
 - Responsive UI
 
+###
+Please use node js version 20.19.0 or greater than
+Due to i used vite and it is supported with node version ^20.19
+
 ## Getting Started
 
 ### Backend
